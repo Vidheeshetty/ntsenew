@@ -1,8 +1,27 @@
 # Default configuration for Trend Riding Strategy
-# Override any field as needed in custom copies.
+# Optimized for better signal generation
 
+# Lookback period for identifying breakouts
 lookback_intervals: 20
+
+# Risk management parameters
 sl_pct: 0.02  # 2% stop-loss for indices
 tp_pct: 0.04  # 4% take-profit
-entry_buffer_pct: 0.2  # 0.2% buffer per spec
-sar_enabled: false 
+
+# Entry buffer to avoid false breakouts
+# Reduced from 2.0 to 0.2 for more frequent signals
+entry_buffer_pct: 0.2  # 0.2% buffer above/below breakout level
+
+# Stop and Reverse - enable for continuous trading
+sar_enabled: true  # Enable to exit and reverse on opposite signals
+
+# Only trade near-month contracts
+near_expiry_only: false
+
+# Risk parameters
+max_loss_pct: 0.02  # 2% max loss per trade
+first_day_loss_pct: 0.01  # 1% first day loss limit
+breakeven_shift_pct: 0.02  # Move SL to breakeven after 2% profit
+
+# Instrument type affects buffer calculations
+instrument_type: "INDEX"  # INDEX or STOCK
