@@ -1,0 +1,20 @@
+{
+  "pnl": 656.5999999999985,
+  "return_pct": 3.3836727226815855,
+  "mdd_pct": 2.3930656678450966,
+  "max_drawdown_pct": 2.3930656678450966,
+  "sharpe": 1.8629573653869542,
+  "num_quotes": 63,
+  "trades": [],
+  "instrument_id": "CONTINUOUS_NIFTY",
+  "num_trades": 0,
+  "total_pnl": 0,
+  "time_period": "2023-07-03 to 2023-07-31",
+  "instruments_used": [
+    "NIFTY20230727.FUT.NSE",
+    "NIFTY20230831.FUT.NSE",
+    "NIFTY20230928.FUT.NSE",
+    "NIFTY20231026.FUT.NSE"
+  ],
+  "data_source": "Continuous Contract - Parquet catalog"
+}

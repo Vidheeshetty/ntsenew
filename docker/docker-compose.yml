@@ -1,0 +1,126 @@
+version: '3.8'
+
+services:
+  paper-trading-daemon:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      target: dev
+    container_name: paper-trading-daemon
+    restart: unless-stopped
+    command: ["python", "scripts/paper_trading/run_paper_trading_daemon.py", "--config", "/workspace/config/paper_trading/my_zerodha.yaml"]
+    volumes:
+      # Bind mount source code for live development (Option 3)
+      - ..:/workspace
+      # Persistent data storage
+      - paper_trading_data:/workspace/runlogs
+      - paper_trading_logs:/workspace/logs
+    environment:
+      - PYTHONPATH=/workspace
+      - TZ=Asia/Kolkata
+    networks:
+      - paper_trading_net
+    working_dir: /workspace
+
+  paper-trading-server:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      target: dev
+    container_name: paper-trading-server
+    restart: unless-stopped
+    command: ["python", "scripts/paper_trading/paper_trading_server.py", "--host", "0.0.0.0", "--port", "8000", "--config", "/workspace/config/paper_trading/my_zerodha.yaml"]
+    ports:
+      - "8080:8000"    # Web dashboard
+      - "8888:8888"    # Jupyter (if needed)
+      - "2345:2345"    # Debug port
+    volumes:
+      # Bind mount source code for live development (Option 3)
+      - ..:/workspace
+      # Persistent data storage
+      - paper_trading_data:/workspace/runlogs
+      - paper_trading_logs:/workspace/logs
+    environment:
+      - PYTHONPATH=/workspace
+      - TZ=Asia/Kolkata
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - paper_trading_net
+    depends_on:
+      - paper-trading-daemon
+    working_dir: /workspace
+
+  # Development shell service for Option 3
+  devshell:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      target: dev
+    container_name: paper-trading-devshell
+    command: bash
+    volumes:
+      - ..:/workspace
+    environment:
+      - PYTHONPATH=/workspace
+      - TZ=Asia/Kolkata
+    ports:
+      - "8889:8888"    # Jupyter on different port
+      - "2346:2345"    # Debug on different port
+    networks:
+      - paper_trading_net
+    profiles:
+      - dev
+
+  # Optional: Redis for caching and session management
+  redis:
+    image: redis:7-alpine
+    container_name: paper-trading-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    networks:
+      - paper_trading_net
+    profiles:
+      - full
+
+  # Optional: PostgreSQL for persistent data storage
+  postgres:
+    image: postgres:15-alpine
+    container_name: paper-trading-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: paper_trading
+      POSTGRES_USER: trader
+      POSTGRES_PASSWORD: trading123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - paper_trading_net
+    profiles:
+      - full
+
+volumes:
+  paper_trading_data:
+    driver: local
+  paper_trading_config:
+    driver: local
+  paper_trading_logs:
+    driver: local
+  redis_data:
+    driver: local
+  postgres_data:
+    driver: local
+
+networks:
+  paper_trading_net:
+    driver: bridge 

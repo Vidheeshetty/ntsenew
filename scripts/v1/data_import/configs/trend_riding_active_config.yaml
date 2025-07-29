@@ -1,0 +1,27 @@
+# Trend Riding Strategy Config - Active Trading Mode
+# This config enables more frequent trading by using SAR and tighter risk controls
+
+# Core instrument settings
+instrument_id: "NIFTY20230629.FUT.NSE"  # Will be overridden by command line
+
+# Risk parameters (tighter for more frequent exits)
+sl_pct: 0.015  # 1.5% stop loss (was 2%)
+tp_pct: 0.025  # 2.5% take profit (was 4%)
+
+# Breakout settings
+lookback_intervals: 10  # Shorter lookback for more sensitive signals (was 20)
+entry_buffer_pct: 1.5   # Lower buffer for easier entries (was 2.0)
+
+# Enable stop-and-reverse for signal-based exits
+sar_enabled: true  # This will generate trades on signal reversals
+
+# Position sizing
+position_size: 1
+
+# Additional risk controls
+max_loss_pct: 0.015
+first_day_loss_pct: 0.008
+breakeven_shift_pct: 0.015
+
+# Instrument type
+instrument_type: "INDEX" 

@@ -1,0 +1,90 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+*.zip
+catalog-data/
+# Virtual Environment
+venv/
+ENV/
+env/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# macOS
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+
+
+
+# Logs
+*.log
+*.zip
+logs/
+
+# Nautilus Trader (reference only)
+nautilus_trader/
+
+# Data & generated artifacts
+runlogs/
+runlogs/test_reports/
+testlogs/
+raw-data/
+data/
+_summary.txts/
+assets/
+DATA_CATALOG.md
+
+# Legacy & debug code (excluded from core development workflow)
+legacy_src/
+old-code/
+debug-code/
+legacy_tests/
+
+# Notebooks & binary docs
+*.ipynb
+*.pdf
+
+# Generated reports
+*.html
+*.csv
+
+# Tool caches
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.history/
+
+# Jupyter checkpoints
+**/.ipynb_checkpoints/
+
+# Plot artefacts
+runlogs/plots/
+guide/**/plots/
+
+# Ad-hoc logs
+backtest.log
+pytest.log
